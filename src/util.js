@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 const fsPromises = fs.promises
 
 //@TODO: implement the actual walk
@@ -11,8 +12,8 @@ exports.formatTemplate = (template, variables) => {
    return template
 }
 
-exports.extractPackageNameFromPath = path => {
-   const dirs = path.split('/').reverse()
+exports.extractPackageNameFromDir = dir => {
+   const dirs = dir.split(path.sep).reverse()
    const javaIndex = dirs.indexOf('java')
    let packageName = 'main'
    if (javaIndex !== -1 && dirs.indexOf('main') === javaIndex + 1) {

@@ -1,5 +1,6 @@
 const expect = require('chai').expect
 const util = require('../src/util')
+const path = require('path')
 
 describe('util.formatTemplate', () => {
    it('should replace placeholders with values', () => {
@@ -15,24 +16,14 @@ describe('util.formatTemplate', () => {
 
 describe('util.extractPackageNameFromPath', () => {
    it('should extract', () => {
-      expect(util.extractPackageNameFromPath("/home/user/projects/a/src/main/java/com/hamitzor"))
+      expect(util.extractPackageNameFromDir(path.resolve("/home/user/projects/a/src/main/java/com/hamitzor")))
          .to
          .eql("com.hamitzor")
    })
 
    it('should not extract', () => {
-      expect(util.extractPackageNameFromPath("/home/user/projects/hamitzor"))
+      expect(util.extractPackageNameFromDir(path.resolve("/home/user/projects/hamitzor")))
          .to
          .eql("main")
    })
-})
-
-describe('util.findJavaFiles', () => {
-   util.findJavaFiles('/home/hamit/projects/java/old-projects/java-demos/spring-demo')
-      .then(files => {
-         console.log(files)
-      })
-      .catch(err => {
-         console.log(err)
-      })
 })

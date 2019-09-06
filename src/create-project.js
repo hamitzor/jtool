@@ -18,8 +18,8 @@ module.exports = (rootDir, name, packageName, firstClass, javaVersion = "11") =>
       }
       else {
          const packageDirs = packageName.split('.')
-         const mainSourcesDir = path.resolve(rootDir, 'src', 'main', 'java', ...packageDirs)
-         const testSourcesDir = path.resolve(rootDir, 'src', 'test', 'java', ...packageDirs)
+         const mainSourcesDir = path.resolve(rootDir, 'src/main/java', ...packageDirs)
+         const testSourcesDir = path.resolve(rootDir, 'src/test/java', ...packageDirs)
          fsPromises.mkdir(mainSourcesDir, { recursive: true })
             .then(() => fsPromises.mkdir(testSourcesDir, { recursive: true }))
             .then(() => createJsonFile(rootDir, "jtool.config", "configJson", { projectName: name, javaVersion }))

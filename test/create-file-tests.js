@@ -6,8 +6,8 @@ const createJsonFile = require('../src/create-json-file')
 const fs = require('fs')
 
 describe('createFile', () => {
-   const fakeProjectDir = path.resolve(os.tmpdir(), 'e11a93b', 'testproject')
-   const packageDir = path.resolve(fakeProjectDir, 'main', 'java', 'com', 'hamitzor')
+   const fakeProjectDir = path.resolve(os.tmpdir(), 'e11a93b/testproject')
+   const packageDir = path.resolve(fakeProjectDir, 'main/java/com/hamitzor')
    before(() => {
       fs.mkdirSync(packageDir, { recursive: true })
    })
