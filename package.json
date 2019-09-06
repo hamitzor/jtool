@@ -1,0 +1,16 @@
+{
+    "name": "jtool",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "Hamit Zor (thenrerise@gmail.com)",
+    "scripts": {
+        "test": "NODE_ENV=test mocha ./test/*.js --require ./test/index --exit"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "chai": "^4.2.0",
+        "core-js": "^3.2.1",
+        "mocha": "^6.2.0",
+        "regenerator-runtime": "^0.13.3"
+    }
+}
