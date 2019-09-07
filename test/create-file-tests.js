@@ -6,8 +6,8 @@ const createJsonFile = require('../src/create-json-file')
 const fs = require('fs')
 
 describe('createFile', () => {
-   const fakeProjectDir = path.resolve(os.tmpdir(), 'e11a93b/testproject')
-   const packageDir = path.resolve(fakeProjectDir, 'main/java/com/hamitzor')
+   const fakeDir = path.resolve(os.tmpdir(), `create-file-tests${Date.now()}`)
+   const packageDir = path.resolve(fakeDir, 'main/java/com/hamitzor')
    before(() => {
       fs.mkdirSync(packageDir, { recursive: true })
    })
@@ -58,9 +58,9 @@ describe('createFile', () => {
    })
 
    it('should create .java file with Ford class and main package', done => {
-      createJavaFile(fakeProjectDir, "Ford", "class")
+      createJavaFile(fakeDir, "Ford", "class")
          .then(() => {
-            fs.readFile(path.resolve(fakeProjectDir, 'Ford.java'), (err, data) => {
+            fs.readFile(path.resolve(fakeDir, 'Ford.java'), (err, data) => {
                if (err)
                   done(err)
                expect(data.toString())
@@ -73,9 +73,9 @@ describe('createFile', () => {
    })
 
    it('should create .java file with CarBrand interface and main package', done => {
-      createJavaFile(fakeProjectDir, "CarBrand", "interface")
+      createJavaFile(fakeDir, "CarBrand", "interface")
          .then(() => {
-            fs.readFile(path.resolve(fakeProjectDir, 'CarBrand.java'), (err, data) => {
+            fs.readFile(path.resolve(fakeDir, 'CarBrand.java'), (err, data) => {
                if (err)
                   done(err)
                expect(data.toString())
@@ -88,9 +88,9 @@ describe('createFile', () => {
    })
 
    it('should create .java file with FordTest test class and main package', done => {
-      createJavaFile(fakeProjectDir, "FordTest", "testClass")
+      createJavaFile(fakeDir, "FordTest", "testClass")
          .then(() => {
-            fs.readFile(path.resolve(fakeProjectDir, 'FordTest.java'), (err, data) => {
+            fs.readFile(path.resolve(fakeDir, 'FordTest.java'), (err, data) => {
                if (err)
                   done(err)
                expect(data.toString())
@@ -103,9 +103,9 @@ describe('createFile', () => {
    })
 
    it('should create jtool.config.json', done => {
-      createJsonFile(fakeProjectDir, "jtool.config", "configJson", { projectName: "Test" })
+      createJsonFile(fakeDir, "jtool.config", "configJson", { projectName: "Test" })
          .then(() => {
-            fs.readFile(path.resolve(fakeProjectDir, 'jtool.config.json'), (err, data) => {
+            fs.readFile(path.resolve(fakeDir, 'jtool.config.json'), (err, data) => {
                if (err)
                   done(err)
                expect(data.toString())

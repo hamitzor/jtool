@@ -18,32 +18,33 @@ describe('util.formatTemplate', () => {
 
 describe('util.extractPackageNameFromPath', () => {
    it('should extract', () => {
-      expect(util.extractPackageNameFromDir(path.resolve("/home/user/projects/a/src/main/java/com/hamitzor")))
+      expect(util.extractPackageNameFromPath(path.resolve("/home/user/projects/a/src/main/java/com/hamitzor")))
          .to
          .eql("com.hamitzor")
    })
 
    it('should not extract', () => {
-      expect(util.extractPackageNameFromDir(path.resolve("/home/user/projects/hamitzor")))
+      expect(util.extractPackageNameFromPath(path.resolve("/home/user/projects/hamitzor")))
          .to
          .eql("main")
    })
 })
 
 describe('util.walkUpAndFindProjectRoot', () => {
-   fs.mkdirSync(path.resolve(os.tmpdir(), 'find-project-root-demo/test-project/a/b/c/d'), { recursive: true })
-   fs.writeFileSync(path.resolve(os.tmpdir(), 'find-project-root-demo/test-project/jtool.config.json'), "")
+   const now = Date.now()
+   fs.mkdirSync(path.resolve(os.tmpdir(), `find-project-root-demo${now}/test-project/a/b/c/d`), { recursive: true })
+   fs.writeFileSync(path.resolve(os.tmpdir(), `find-project-root-demo${now}/test-project/jtool.config.json`), "")
    it('should find project root', done => {
-      util.walkUpAndFindProjectRoot(path.resolve(os.tmpdir(), 'find-project-root-demo/test-project/a/b/c'))
+      util.walkUpAndFindProjectRoot(path.resolve(os.tmpdir(), `find-project-root-demo${now}/test-project/a/b/c`))
          .then(projectRoot => {
-            expect(projectRoot).to.eql(path.resolve(os.tmpdir(), 'find-project-root-demo/test-project'))
+            expect(projectRoot).to.eql(path.resolve(os.tmpdir(), `find-project-root-demo${now}/test-project`))
             done()
          })
          .catch(err => done(err))
    })
-   fs.mkdirSync(path.resolve(os.tmpdir(), 'find-project-root-demo2/test-project/a/b/c/d'), { recursive: true })
+   fs.mkdirSync(path.resolve(os.tmpdir(), `find-project-root-demo-2-${now}/test-project/a/b/c/d`), { recursive: true })
    it('should not find project root', done => {
-      util.walkUpAndFindProjectRoot(path.resolve(os.tmpdir(), 'find-project-root-demo2/test-project/a/b/c'))
+      util.walkUpAndFindProjectRoot(path.resolve(os.tmpdir(), `find-project-root-demo-2-${now}/test-project/a/b/c`))
          .then(projectRoot => {
             expect(projectRoot).to.equal(null)
             done()
@@ -77,12 +78,29 @@ describe('util.findJavaFiles', () => {
       'a/b/5.java',
       'a/b/6.java'
    ]
-   fs.mkdirSync(path.resolve(os.tmpdir(), 'find-java-files-demo/a/b'), { recursive: true })
-   testFiles.forEach(file => fs.writeFileSync(path.resolve(os.tmpdir(), 'find-java-files-demo', file), ""))
+   const now = Date.now()
+   const tempPath = path.resolve(os.tmpdir(), `find-java-files-demo${now}`)
+   fs.mkdirSync(path.resolve(tempPath, `a/b`), { recursive: true })
+   testFiles.forEach(file => fs.writeFileSync(path.resolve(tempPath, file), ""))
    it('should find java files', done => {
-      util.findJavaFiles(path.resolve(os.tmpdir(), 'find-java-files-demo'))
+      util.findJavaFiles(tempPath)
          .then(files => {
-            expect(files).to.eql(testFiles)
+            expect(files).to.eql(testFiles.map(file => path.resolve(tempPath, file)))
+            done()
+         })
+         .catch(err => done(err))
+   })
+})
+
+describe('util.getPackageOfTestClass', () => {
+   const now = Date.now()
+   const tempDir = path.resolve(os.tmpdir(), `get-package-of-test-class${now}/test/a/b/c`)
+   fs.mkdirSync(tempDir, { recursive: true })
+   fs.writeFileSync(path.resolve(tempDir, 'CarTest.class'), "")
+   it('should get package of test class', done => {
+      util.getPackageOfTestClass('Car', path.resolve(os.tmpdir(), `get-package-of-test-class${now}`))
+         .then(package => {
+            expect(package).to.eql('test.a.b.c')
             done()
          })
          .catch(err => done(err))
