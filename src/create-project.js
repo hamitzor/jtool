@@ -3,7 +3,7 @@ const path = require('path')
 const createJavaFile = require('./create-java-file')
 const createJsonFile = require('./create-json-file')
 
-module.exports = (rootDir, name, packageName, firstClass, javaVersion = "11") => new Promise((resolve, reject) => {
+module.exports = (rootDir, name, packageName, firstClass) => new Promise((resolve, reject) => {
    fs.exists(rootDir, exists => {
       if (exists) {
          fs.exists(path.resolve(rootDir, "jtool.config.json"), exists => {
@@ -27,7 +27,7 @@ module.exports = (rootDir, name, packageName, firstClass, javaVersion = "11") =>
                   if (err)
                      reject(err)
                   else
-                     createJsonFile(rootDir, "jtool.config", "configJson", { projectName: name, javaVersion })
+                     createJsonFile(rootDir, "jtool.config", "configJson", { projectName: name })
                         .then(() => createJavaFile(mainSourcesDir, firstClass, "class"))
                         .then(() => createJavaFile(testSourcesDir, firstClass + "Test", "testClass"))
                         .then(() => resolve())

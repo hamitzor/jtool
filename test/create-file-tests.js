@@ -103,14 +103,14 @@ describe('createFile', () => {
    })
 
    it('should create jtool.config.json', done => {
-      createJsonFile(fakeProjectDir, "jtool.config", "configJson", { projectName: "Test", javaVersion: "11" })
+      createJsonFile(fakeProjectDir, "jtool.config", "configJson", { projectName: "Test" })
          .then(() => {
             fs.readFile(path.resolve(fakeProjectDir, 'jtool.config.json'), (err, data) => {
                if (err)
                   done(err)
                expect(data.toString())
                   .to
-                  .eql("{\n\t\"projectName\": \"Test\",\n\t\"javaVersion\": \"11\"\n}")
+                  .eql("{\n\t\"projectName\": \"Test\"\n}")
                done()
             })
          })

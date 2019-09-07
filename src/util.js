@@ -1,5 +1,16 @@
 const path = require('path')
 const glob = require("glob")
+const { spawn } = require('child_process')
+
+exports.javaExists = (env = process.env) => new Promise((resolve) => {
+   const locaterCommand = exports.isWin() ? 'where' : 'which'
+   spawn(locaterCommand, ['javac'], { env })
+      .on('close', code => {
+         resolve(code === 0)
+      })
+})
+
+exports.isWin = () => require('os').platform().includes('win')
 
 exports.absoluteRootDir = () => path.parse(process.cwd()).root
 
@@ -42,5 +53,5 @@ exports.extractPackageNameFromDir = dir => {
    if (javaIndex !== -1 && dirs.indexOf('main') === javaIndex + 1) {
       packageName = dirs.slice(0, javaIndex).reverse().join('.')
    }
-   return packageName
+   return packageName.length ? packageName : 'main'
 }
