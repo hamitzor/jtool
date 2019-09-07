@@ -10,6 +10,7 @@
     "dependencies": {
         "chai": "^4.2.0",
         "core-js": "^3.2.1",
+        "glob": "^7.1.4",
         "mocha": "^6.2.0",
         "regenerator-runtime": "^0.13.3"
     }

@@ -1,9 +1,32 @@
-const fs = require('fs')
 const path = require('path')
-const fsPromises = fs.promises
+const glob = require("glob")
 
-//@TODO: implement the actual walk
-exports.findJavaFiles = dir => fsPromises.readdir(dir)
+exports.absoluteRootDir = () => path.parse(process.cwd()).root
+
+exports.walkUpAndFindProjectRoot = cwd => new Promise((resolve, reject) => {
+   glob("jtool.config.json", { cwd }, (err, files) => {
+      if (err)
+         reject(err)
+      const upperDirectory = path.resolve(cwd, "..")
+      if (upperDirectory === exports.absoluteRootDir()) {
+         resolve(null)
+      }
+      else if (!files.length) {
+         resolve(exports.walkUpAndFindProjectRoot(upperDirectory))
+      }
+      else {
+         resolve(cwd)
+      }
+   })
+})
+
+exports.findJavaFiles = cwd => new Promise((resolve, reject) => {
+   glob("**/*.java", { cwd }, (err, files) => {
+      if (err)
+         reject(err)
+      resolve(files)
+   })
+})
 
 exports.formatTemplate = (template, variables) => {
    Object.keys(variables).forEach(name => {
