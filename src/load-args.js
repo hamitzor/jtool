@@ -62,6 +62,24 @@ yargs.command('create-interface <INTERFACE_NAME> [DIRECTORY]', 'create a new int
    }
 )
 
+yargs.command('create-test-class <TEST_CLASS_NAME> [DIRECTORY]', 'create a new test class',
+   yargs => {
+      yargs
+         .positional('TEST_CLASS_NAME', {
+            describe: 'name of the test class. example: if Main given MainTest is created.'
+         })
+         .positional('DIRECTORY', {
+            describe: 'directory to create class file in',
+            default: '.'
+         })
+   },
+   argv => {
+      console.info('Creating class...')
+      controllers.createJavaFile(argv.DIRECTORY, argv.TEST_CLASS_NAME + "Test", 'testClass')
+         .then(file => console.info(`${path.relative(process.cwd(), file)} created.`))
+   }
+)
+
 yargs.command('run-test <CLASS_NAME>', 'run test class',
    yargs => {
       yargs
