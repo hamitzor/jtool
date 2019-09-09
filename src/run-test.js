@@ -6,7 +6,7 @@ const runClassfile = (className, package, classpath) => new Promise((resolve, re
    isJavaInstalled().then(exists => {
       if (exists) {
          const java = spawn('java', ['-classpath', classpath, `${package}.${className}`])
-         java.stdout.on('data', data => console.log(data.toString()))
+         java.stdout.on('data', data => process.stdout.write(data.toString()))
          java.stderr.on('data', data => reject(data.toString()))
          java.on('close', code => resolve(code))
          java.on('error', err => reject(err))
