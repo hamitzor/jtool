@@ -30,7 +30,7 @@ module.exports = (rootDir, name, packageName, firstClass) => new Promise((resolv
                      createJsonFile(rootDir, "jtool.config", "configJson", { projectName: name })
                         .then(() => createJavaFile(mainSourcesDir, firstClass, "class"))
                         .then(() => createJavaFile(testSourcesDir, firstClass + "Test", "testClass"))
-                        .then(() => resolve())
+                        .then(() => resolve(name))
                         .catch(err => reject(err))
                })
          })

@@ -4,10 +4,11 @@ const templates = require('../config/templates.json')
 const { formatTemplate, extractPackageNameFromPath } = require('./util')
 
 module.exports = (dir, name, type = 'class') => new Promise((resolve, reject) => {
-   fs.writeFile(path.resolve(dir, `${name}.java`), formatTemplate(templates[type], { packageName: extractPackageNameFromPath(dir), className: name }), err => {
+   const file = path.resolve(dir, `${name}.java`)
+   fs.writeFile(file, formatTemplate(templates[type], { packageName: extractPackageNameFromPath(dir), className: name }), err => {
       if (err)
          reject(err)
       else
-         resolve()
+         resolve(file)
    })
 })
