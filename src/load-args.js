@@ -3,92 +3,92 @@ const controllers = require('./controllers')
 const path = require('path')
 
 
-yargs.command('create-project <PROJECT_NAME> <FIRST_PACKAGE> [FIRST_CLASS]', 'create a new project',
+yargs.command('create-project <project_name> <first_package> [first_class]', 'create a new project',
    yargs => {
       yargs
-         .positional('PROJECT_NAME', {
+         .positional('project_name', {
             describe: 'name of the project. project directory will also have this name'
          })
-         .positional('FIRST_PACKAGE', {
+         .positional('first_package', {
             describe: 'first package to be created',
             required: true
          })
-         .positional('FIRST_CLASS', {
+         .positional('first_class', {
             describe: 'first class to be created',
             default: 'Main'
          })
    },
    argv => {
       console.info('Creating project...')
-      controllers.createProject(argv.PROJECT_NAME, argv.FIRST_PACKAGE, argv.FIRST_CLASS)
+      controllers.createProject(argv.project_name, argv.first_package, argv.first_class)
          .then(name => console.info(`${name} created.`))
          .catch(err => console.error(err))
    }
 )
 
-yargs.command('create-class <CLASS_NAME> [DIRECTORY]', 'create a new class',
+yargs.command('create-class <class_name> [directory]', 'create a new class',
    yargs => {
       yargs
-         .positional('CLASS_NAME', {
+         .positional('class_name', {
             describe: 'name of the class.'
          })
-         .positional('DIRECTORY', {
+         .positional('directory', {
             describe: 'directory to create class file in',
             default: '.'
          })
    },
    argv => {
       console.info('Creating class...')
-      controllers.createJavaFile(argv.DIRECTORY, argv.CLASS_NAME)
+      controllers.createJavaFile(argv.directory, argv.class_name)
          .then(file => console.info(`${path.relative(process.cwd(), file)} created.`))
    }
 )
 
-yargs.command('create-interface <INTERFACE_NAME> [DIRECTORY]', 'create a new interface',
+yargs.command('create-interface <interface_name> [directory]', 'create a new interface',
    yargs => {
       yargs
-         .positional('INTERFACE_NAME', {
+         .positional('interface_name', {
             describe: 'name of the interface.'
          })
-         .positional('DIRECTORY', {
+         .positional('directory', {
             describe: 'directory to create interface file in',
             default: '.'
          })
    },
    argv => {
       console.info('Creating interface...')
-      controllers.createJavaFile(argv.DIRECTORY, argv.INTERFACE_NAME, 'interface')
+      controllers.createJavaFile(argv.directory, argv.INTERFACE_NAME, 'interface')
          .then(file => console.info(`${path.relative(process.cwd(), file)} created.`))
    }
 )
 
-yargs.command('create-test-class <TEST_CLASS_NAME> [DIRECTORY]', 'create a new test class',
+yargs.command('create-test-class <test_class_name> [directory]', 'create a new test class',
    yargs => {
       yargs
-         .positional('TEST_CLASS_NAME', {
+         .positional('test_class_name', {
             describe: 'name of the test class. example: if Main given MainTest is created.'
          })
-         .positional('DIRECTORY', {
+         .positional('directory', {
             describe: 'directory to create class file in',
             default: '.'
          })
    },
    argv => {
       console.info('Creating class...')
-      controllers.createJavaFile(argv.DIRECTORY, argv.TEST_CLASS_NAME + "Test", 'testClass')
+      controllers.createJavaFile(argv.directory, argv.test_class_name + "Test", 'testClass')
          .then(file => console.info(`${path.relative(process.cwd(), file)} created.`))
    }
 )
 
-yargs.command('run-test <CLASS_NAME>', 'run test class',
+yargs.command('run-test <class_name>', 'run test class',
    yargs => {
       yargs
-         .positional('CLASS_NAME', {
+         .positional('class_name', {
             describe: 'name of the class. example: Main given MainTest class executed'
          })
    },
    argv => {
-      controllers.runTest(argv.CLASS_NAME)
+      controllers.runTest(argv.class_name)
          .catch(err => console.error(err))
    }
 )

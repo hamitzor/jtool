@@ -11,13 +11,8 @@ exports.createProject = (name, packageName, firstClass) => {
 }
 
 exports.runTest = className => util.walkUpAndFindProjectRoot(process.cwd())
-   .then(projectRoot => {
-      if (projectRoot === null) {
-         return Promise.reject('This directory is not inside of an jtool project')
-      }
-      else {
-         return util.findJavaFiles(projectRoot)
-            .then(files => compileFiles(files, path.resolve(projectRoot, 'build')))
-            .then(() => require('./run-test')(className, path.resolve(projectRoot, 'build')))
-      }
-   })
+   .then(projectRoot => projectRoot === null ?
+      Promise.reject('This directory is not inside of an jtool project') :
+      util.findJavaFiles(projectRoot)
+         .then(files => compileFiles(files, path.resolve(projectRoot, 'build')))
+         .then(() => require('./run-test')(className, path.resolve(projectRoot, 'build'))))
