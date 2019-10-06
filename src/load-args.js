@@ -57,7 +57,7 @@ yargs.command('create-interface <interface_name> [directory]', 'create a new int
    },
    argv => {
       console.info('Creating interface...')
-      controllers.createJavaFile(argv.directory, argv.INTERFACE_NAME, 'interface')
+      controllers.createJavaFile(argv.directory, argv.interface_name, 'interface')
          .then(file => console.info(`${path.relative(process.cwd(), file)} created.`))
    }
 )
